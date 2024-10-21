@@ -6,10 +6,10 @@ const app = express();
 app.use(express.json());
 
 let usuarios = [];
-let id = 1; // Inicia o ID em 1
-let idRecado = 1; // ID para os recados
+let id = 1; 
+let idRecado = 1; 
 
-// Rota inicial de boas-vindas
+
 app.get("/", function (requisicao, resposta) {
   resposta.status(200).send("Bem-vindo ao app!");
 });
