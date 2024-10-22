@@ -101,11 +101,10 @@ app.delete("/usuarios/:id", (requisicao, resposta) => {
 // --- Rotas de Recados ---
 
 // Rota para criar um recado usando o e-mail do usuário
-app.post("/recados/:email", (requisicao, resposta) => {
-  const email = requisicao.params.email;
-  const { titulo, descricao } = requisicao.body;
+app.post("/recados", (requisicao, resposta) => {
+  const { email, titulo, descricao } = requisicao.body; // Pegando o email do body
 
-  const usuario = usuarios.find((e) => e.email === email);
+  const usuario = usuarios.find((u) => u.email === email);
   if (!usuario) {
     return resposta.status(404).json({ mensagem: "Usuário não encontrado." });
   }
@@ -116,9 +115,11 @@ app.post("/recados/:email", (requisicao, resposta) => {
   return resposta.status(201).json({ mensagem: "Recado criado com sucesso!", recado });
 });
 
+
 // Rota para listar os recados de um usuário pelo e-mail
-app.get("/recados/:email", (requisicao, resposta) => {
-  const email = requisicao.params.email;
+app.get("/recados", (requisicao, resposta) => {
+  const { email } = requisicao.query; // Pegando o email da query string, se quiser usar query
+
   const usuario = usuarios.find((u) => u.email === email);
 
   if (!usuario) {
