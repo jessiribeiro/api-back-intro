@@ -101,8 +101,9 @@ app.delete("/usuarios/:id", (requisicao, resposta) => {
 // --- Rotas de Recados ---
 
 // Rota para criar um recado usando o e-mail do usuário
-app.post("/recados", (requisicao, resposta) => {
-  const { email, titulo, descricao } = requisicao.body; // Pegando o email do body
+app.post("/recados/:email", (requisicao, resposta) => {
+  const email = requisicao.params.email; // Email nos parâmetros da URL
+  const { titulo, descricao } = requisicao.body; // Título e descrição do body
 
   const usuario = usuarios.find((u) => u.email === email);
   if (!usuario) {
