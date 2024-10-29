@@ -117,10 +117,8 @@ app.post("/recados/:email", (requisicao, resposta) => {
 });
 
 
-// Rota para listar os recados de um usuário pelo e-mail
-app.get("/recados", (requisicao, resposta) => {
-  const { email } = requisicao.query; // Pegando o email da query string, se quiser usar query
-
+app.get("/recados/:email", (requisicao, resposta) => {
+  const email = requisicao.params.email; // Pega o email dos parâmetros da URL
   const usuario = usuarios.find((u) => u.email === email);
 
   if (!usuario) {
@@ -155,15 +153,14 @@ app.put("/recados/:email/:idRecado", (requisicao, resposta) => {
 
 // Rota para deletar um recado pelo e-mail do usuário
 app.delete("/recados/:email/:idRecado", (requisicao, resposta) => {
-  const email = requisicao.params.email;
-  const idRecado = parseInt(requisicao.params.idRecado);
+  const { email, idRecado } = requisicao.params;
 
   const usuario = usuarios.find((u) => u.email === email);
   if (!usuario) {
     return resposta.status(404).json({ mensagem: "Usuário não encontrado." });
   }
 
-  const indiceRecado = usuario.recados.findIndex((r) => r.id === idRecado);
+  const indiceRecado = usuario.recados.findIndex((r) => r.id === parseInt(idRecado));
   if (indiceRecado === -1) {
     return resposta.status(404).json({ mensagem: "Recado não encontrado." });
   }
@@ -171,6 +168,7 @@ app.delete("/recados/:email/:idRecado", (requisicao, resposta) => {
   usuario.recados.splice(indiceRecado, 1);
   return resposta.status(200).json({ mensagem: "Recado deletado com sucesso." });
 });
+
 
 // Inicia o servidor na porta 3000
 app.listen(3000, function () {
